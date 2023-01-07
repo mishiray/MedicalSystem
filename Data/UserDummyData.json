@@ -1,0 +1,190 @@
+[
+  {
+    "id": "3f096690-edeb-43c7-8cd4-db31a73a8df0",
+    "isActive": true,
+    "userName": "System_Admin",
+    "name": "System Admin",
+    "email": "admin@mail.com",
+    "userType": 0
+  },
+  {
+    "id": "843b5adc-17cd-41d4-9601-1e97a64a21b6",
+    "isActive": true,
+    "userType": 1,
+    "name": "Alexander Pittman",
+    "username": "Marcy",
+    "email": "marcypittman@scentric.com",
+    "phone": "+1 (887) 452-2195"
+  },
+  {
+    "id": "7c183c9d-8541-42d8-8174-6b39bc638331",
+    "isActive": true,
+    "userType": 2,
+    "name": "Atkinson Terrell",
+    "username": "Salinas",
+    "email": "salinasterrell@scentric.com",
+    "phone": "+1 (804) 490-3629"
+  },
+  {
+    "id": "aad84429-2667-41be-8d84-37d635fecbbe",
+    "isActive": false,
+    "userType": 2,
+    "name": "Larsen Ball",
+    "username": "Holman",
+    "email": "holmanball@scentric.com",
+    "phone": "+1 (875) 491-2203"
+  },
+  {
+    "id": "efbe732c-87c9-4593-95dd-318ac88560af",
+    "isActive": false,
+    "userType": 1,
+    "name": "Brooke Lowe",
+    "username": "Sarah",
+    "email": "sarahlowe@scentric.com",
+    "phone": "+1 (883) 473-3443"
+  },
+  {
+    "id": "f7ef96f1-3aa8-4482-85f7-75574e43c81f",
+    "isActive": true,
+    "userType": 1,
+    "name": "Lydia Burke",
+    "username": "Bertie",
+    "email": "bertieburke@scentric.com",
+    "phone": "+1 (815) 465-2885"
+  },
+  {
+    "id": "fc0e8c0a-f28c-4dfb-a5f7-e20eda7ceb6e",
+    "isActive": true,
+    "userType": 2,
+    "name": "Case Knight",
+    "username": "Carmela",
+    "email": "carmelaknight@scentric.com",
+    "phone": "+1 (912) 554-2082"
+  },
+  {
+    "id": "d32cc020-9017-425d-a314-a4441489e71b",
+    "isActive": false,
+    "userType": 1,
+    "name": "Sybil Rocha",
+    "username": "Nichole",
+    "email": "nicholerocha@scentric.com",
+    "phone": "+1 (970) 600-2844"
+  },
+  {
+    "id": "5f9083b4-3514-4c29-9a23-c53926017de9",
+    "isActive": true,
+    "userType": 2,
+    "name": "Susan Perry",
+    "username": "Simon",
+    "email": "simonperry@scentric.com",
+    "phone": "+1 (877) 575-3723"
+  },
+  {
+    "id": "da220140-d152-442f-b75b-ef02905eaaaa",
+    "isActive": true,
+    "userType": 1,
+    "name": "Dixie Franco",
+    "username": "Graves",
+    "email": "gravesfranco@scentric.com",
+    "phone": "+1 (889) 541-3468"
+  },
+  {
+    "id": "b1703cfa-f858-4840-a459-d610a7572011",
+    "isActive": false,
+    "userType": 2,
+    "name": "Valdez Camacho",
+    "username": "Richards",
+    "email": "richardscamacho@scentric.com",
+    "phone": "+1 (887) 580-2555"
+  },
+  {
+    "id": "83068a3b-5938-410c-a500-2a331cf95826",
+    "isActive": true,
+    "userType": 2,
+    "name": "Myra Middleton",
+    "username": "Forbes",
+    "email": "forbesmiddleton@scentric.com",
+    "phone": "+1 (921) 524-3359"
+  },
+  {
+    "id": "25aee0b5-5270-46e6-a58c-a1dc799b30f0",
+    "isActive": false,
+    "userType": 1,
+    "name": "Bridgette Finley",
+    "username": "Cline",
+    "email": "clinefinley@scentric.com",
+    "phone": "+1 (837) 419-3124"
+  },
+  {
+    "id": "9729486a-1cb0-45ed-aa05-aa8818142cb7",
+    "isActive": true,
+    "userType": 2,
+    "name": "Ana Owens",
+    "username": "Saunders",
+    "email": "saundersowens@scentric.com",
+    "phone": "+1 (915) 421-2474"
+  },
+  {
+    "id": "61a7c61d-1360-4498-9863-8090e32505e2",
+    "isActive": true,
+    "userType": 1,
+    "name": "Abbott Horn",
+    "username": "Lucile",
+    "email": "lucilehorn@scentric.com",
+    "phone": "+1 (847) 562-3529"
+  },
+  {
+    "id": "a9557069-aaf7-44df-8103-15f3d9809fad",
+    "isActive": false,
+    "userType": 1,
+    "name": "Dianne Sykes",
+    "username": "Deena",
+    "email": "deenasykes@scentric.com",
+    "phone": "+1 (846) 517-3295"
+  },
+  {
+    "id": "89fecac0-a2c4-47e5-8cc3-3c237f5bc72f",
+    "isActive": false,
+    "userType": 1,
+    "name": "Cassandra Carpenter",
+    "username": "Rosanne",
+    "email": "rosannecarpenter@scentric.com",
+    "phone": "+1 (802) 405-3566"
+  },
+  {
+    "id": "16431c2b-a340-43e3-bdc5-6305f85213f5",
+    "isActive": false,
+    "userType": 2,
+    "name": "Michael Gillespie",
+    "username": "Moreno",
+    "email": "morenogillespie@scentric.com",
+    "phone": "+1 (800) 495-3671"
+  },
+  {
+    "id": "bfd2a131-f419-4dd9-a7d0-e842fff61f9f",
+    "isActive": true,
+    "userType": 1,
+    "name": "Cohen Hood",
+    "username": "Bowers",
+    "email": "bowershood@scentric.com",
+    "phone": "+1 (892) 462-3690"
+  },
+  {
+    "id": "14367c3c-d317-4b34-ae6c-88a714a0247f",
+    "isActive": false,
+    "userType": 1,
+    "name": "Sandra Rice",
+    "username": "Geraldine",
+    "email": "geraldinerice@scentric.com",
+    "phone": "+1 (852) 434-2536"
+  },
+  {
+    "id": "44d4e781-6c90-44f4-9905-d1c6fc989ccf",
+    "isActive": true,
+    "userType": 2,
+    "name": "Tate Booker",
+    "username": "Patti",
+    "email": "pattibooker@scentric.com",
+    "phone": "+1 (907) 565-3240"
+  }
+]
