@@ -2,6 +2,7 @@
 using MedicalSystem.Controllers;
 using MedicalSystem.DTOs;
 using MedicalSystem.DTOs.ControllerDtos;
+using MedicalSystem.DTOs.Enums;
 using MedicalSystem.Entities;
 using MedicalSystem.Services;
 using MedicalSystem.Utilities;
@@ -32,7 +33,7 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpPost("create")]
-        [ProducesResponseType(typeof(GlobalResponse<Patient>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<GetUserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Admin,Role1,Role2")]
         public async Task<IActionResult> Create(CreateUserDto model, CancellationToken token)
@@ -42,9 +43,31 @@ namespace MedicalSystem.Controllers
 
             var user = mapper.Map<Patient>(model);
 
-            var createdResult = await patientService.Create(user, token);
+            var result = await patientService.Create(user, token);
 
-            return new ControllerResponse().ReturnResponse(createdResult);
+            switch (result.Response)
+            {
+                case ServiceResponses.BadRequest:
+                    ModelState.AddModelError($"{result.Response}", result.Message);
+                    return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
+
+                case ServiceResponses.NotFound:
+                    ModelState.AddModelError($"{result.Response}", result.Message);
+                    return NotFound(ResponseBuilder.BuildResponse<object>(ModelState, null));
+
+                case ServiceResponses.Failed:
+                    ModelState.AddModelError($"{result.Response}", result.Message);
+                    return UnprocessableEntity(ResponseBuilder.BuildResponse<object>(ModelState, null));
+
+                case ServiceResponses.Success:
+
+
+                    return Ok(ResponseBuilder.BuildResponse<object>(null, mapper.Map<GetUserDto>(result.Data.User)));
+
+                default:
+                    ModelState.AddModelError($"{result.Response}", result.Message);
+                    return UnprocessableEntity(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
         }
 
         [HttpGet("get-all")]
