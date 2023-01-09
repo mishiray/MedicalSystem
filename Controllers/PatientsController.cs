@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MedicalSystem.Controllers;
+using MedicalSystem.DTOs;
 using MedicalSystem.DTOs.ControllerDtos;
 using MedicalSystem.Entities;
 using MedicalSystem.Services;
@@ -31,6 +32,8 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpPost("create")]
+        [ProducesResponseType(typeof(GlobalResponse<Patient>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Admin,Role1,Role2")]
         public async Task<IActionResult> Create(CreateUserDto model, CancellationToken token)
         {
@@ -45,6 +48,7 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpGet("get-all")]
+        [ProducesResponseType(typeof(GlobalResponse<GetUserDto[]>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListAll(int page, int perPage, CancellationToken token)
         {
             var users = patientService.GetAll().Include(k => k.User);
@@ -57,6 +61,8 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpGet("get-by-id")]
+        [ProducesResponseType(typeof(GlobalResponse<GetUserDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([Required] string userId, CancellationToken token)
         {
             if (string.IsNullOrEmpty(userId))
@@ -69,6 +75,7 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpGet("get-all-records")]
+        [ProducesResponseType(typeof(GlobalResponse<GetRecordDto[]>), StatusCodes.Status200OK)]
         [Authorize (Roles = "Role3")]
         public async Task<IActionResult> ListAllRecords(int page, int perPage, CancellationToken token)
         {
@@ -85,6 +92,9 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpGet("get-records-by-medicalOfficer")]
+        [ProducesResponseType(typeof(GlobalResponse<GetRecordDto[]>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Role3")]
         public async Task<IActionResult> GetByPstientRecords([Required] string medicalOfficerId, int page, int perPage, CancellationToken token)
         {

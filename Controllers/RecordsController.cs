@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MedicalSystem.DTOs;
 using MedicalSystem.DTOs.ControllerDtos;
 using MedicalSystem.DTOs.Enums;
 using MedicalSystem.DTOs.ServiceDtos;
@@ -34,6 +35,8 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpPost("create")]
+        [ProducesResponseType(typeof(GlobalResponse<Record>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
         [Authorize(Roles = "Role2")]
         public async Task<IActionResult> Create(CreateRecordDto model, CancellationToken token)
         {
@@ -51,20 +54,23 @@ namespace MedicalSystem.Controllers
         }
 
         [HttpGet("get-all")]
+        [ProducesResponseType(typeof(GlobalResponse<GetRecordDto[]>), StatusCodes.Status200OK)]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListAll(int page, int perPage, CancellationToken token)
         {
             
-            var users = medicalOfficerService.GetAll();
+            var records = recordService.GetAll();
 
-            var paginatedUsers = users.Paginate(page, perPage);
+            var paginatedRecords = records.Paginate(page, perPage);
 
-            var mapped = mapper.Map<List<GetUserDto>>(paginatedUsers);
+            var mapped = mapper.Map<List<GetRecordDto>>(paginatedRecords);
 
-            return Ok(ResponseBuilder.BuildResponse(null, Pagination.GetPagedData(mapped, page, perPage, await users.CountAsync(token))));
+            return Ok(ResponseBuilder.BuildResponse(null, Pagination.GetPagedData(mapped, page, perPage, await records.CountAsync(token))));
         }
 
         [HttpGet("get-by-id")]
+        [ProducesResponseType(typeof(GlobalResponse<GetRecordDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([Required] string recordId, CancellationToken token)
         {
             if (string.IsNullOrEmpty(recordId))
