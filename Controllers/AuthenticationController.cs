@@ -23,7 +23,7 @@ namespace MedicalSystem.Controllers.V1
         }
 
         [HttpPost("login")]
-        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<AuthResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginRequestModel model)
