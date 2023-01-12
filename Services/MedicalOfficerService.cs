@@ -7,6 +7,7 @@ namespace MedicalSystem.Services
     public interface IMedicalOfficerService
     {
         Task<CustomResponse<MedicalOfficer>> Create(MedicalOfficer medicalOfficer, CancellationToken token);
+        Task<bool> CreateUser(MedicalOfficer medicalOfficer, CancellationToken token);
         Task<CustomResponse<MedicalOfficer>> Update(MedicalOfficer medicalOfficer, CancellationToken token);
         Task<CustomResponse<MedicalOfficer>> Get(string medicalOfficerId, CancellationToken token);
         IQueryable<MedicalOfficer> GetAll();
@@ -23,7 +24,7 @@ namespace MedicalSystem.Services
             this.repository = repository;
         }
 
-        private async Task<bool> CreateUser(MedicalOfficer medicalOfficer, CancellationToken token)
+        public async Task<bool> CreateUser(MedicalOfficer medicalOfficer, CancellationToken token)
         {
             if(medicalOfficer == null)
             {

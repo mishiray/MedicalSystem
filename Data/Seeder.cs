@@ -11,6 +11,7 @@ using MedicalSystem.Entities;
 using MedicalSystem.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using MedicalSystem.Services;
 
 namespace MedicalSystem.Data
 {
@@ -20,14 +21,18 @@ namespace MedicalSystem.Data
         private readonly UserManager<User> _userMgr;
         private readonly RoleManager<IdentityRole> _roleMgr;
         private readonly IConfiguration _config;
+        private readonly IMedicalOfficerService medicalOfficer;
+        private readonly IPatientService patientService;
 
         public Seeder(AppDbContext ctx,
-            UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config)
+            UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config, IPatientService patientService, IMedicalOfficerService medicalOfficer)
         {
             _ctx = ctx;
             _userMgr = userManager;
             _roleMgr = roleManager;
             _config = config;
+            this.patientService = patientService;
+            this.medicalOfficer = medicalOfficer;
         }
 
 
@@ -74,11 +79,21 @@ namespace MedicalSystem.Data
                                 await _userMgr.AddToRoleAsync(user, "Admin");
                             }else if(user.UserType == UserType.Patient)
                             {
+                                await patientService.CreateUser(new Patient()
+                                {
+                                    Id = user.Id,
+                                    UserId = user.Id
+                                }, default);
                                 user.Roles = randomRoles.ToList();
                                 await _userMgr.AddToRoleAsync(user, "Role1");
                             }
                             else
                             {
+                                await medicalOfficer.CreateUser(new MedicalOfficer()
+                                {
+                                    Id = user.Id,
+                                    UserId = user.Id
+                                }, default);
                                 user.Roles = randomRoles.ToList();
                                 await _userMgr.AddToRolesAsync(user, randomRoles);
                             }

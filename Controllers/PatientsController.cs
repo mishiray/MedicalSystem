@@ -23,13 +23,15 @@ namespace MedicalSystem.Controllers
     {
         private readonly IPatientService patientService;
         private readonly IRecordService recordService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
-        public PatientsController(IPatientService patientService, IMapper mapper, IRecordService recordService)
+        public PatientsController(IPatientService patientService, IMapper mapper, IRecordService recordService, IUserService userService)
         {
             this.patientService = patientService;
             this.mapper = mapper;
             this.recordService = recordService;
+            this.userService = userService;
         }
 
         [HttpPost("create")]
@@ -74,7 +76,7 @@ namespace MedicalSystem.Controllers
         [ProducesResponseType(typeof(GlobalResponse<GetUserDto[]>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListAll(int page, int perPage, CancellationToken token)
         {
-            var users = patientService.GetAll().Include(k => k.User);
+            var users = patientService.GetAll().Include(k => k.User).Select(c => c.User);
 
             var paginatedUsers = users.Paginate(page, perPage);
 
@@ -94,7 +96,7 @@ namespace MedicalSystem.Controllers
                 return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
             }
 
-            return new ControllerResponse().ReturnResponse(await patientService.Get(userId, token));
+            return new ControllerResponse().ReturnResponse(await userService.GetUserById(userId, token));
         }
 
         [HttpGet("get-all-records")]
