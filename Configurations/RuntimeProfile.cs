@@ -21,8 +21,8 @@ namespace MedicalSystem.Configurations
                     Name = src.Name,
                     Roles = src.Roles,
                     Password = src.Password,
-                    UserType = src.UserType,
                     UserName = src.Email,
+                    UserType = UserType.MedicalOfficer,
                     Email = src.Email,
                     PhoneNumber = src.PhoneNumber,
                 }));
@@ -33,7 +33,7 @@ namespace MedicalSystem.Configurations
                     Name = src.Name,
                     Roles = src.Roles,
                     Password = src.Password,
-                    UserType = src.UserType,
+                    UserType = UserType.Patient,
                     UserName = src.Email,
                     Email = src.Email,
                     PhoneNumber = src.PhoneNumber

@@ -30,7 +30,7 @@ namespace MedicalSystem.Controllers
             this.userService = userService;
         }
 
-        [HttpPost("get-logged-in-user")]
+        [HttpGet("get-logged-in-user")]
         [ProducesResponseType(typeof(GlobalResponse<GetUserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
@@ -62,6 +62,67 @@ namespace MedicalSystem.Controllers
                     return UnprocessableEntity(ResponseBuilder.BuildResponse<object>(ModelState, null));
             }
         }
+
+        [HttpPatch("{userId}/update-roles")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(GlobalResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> EditRoles([Required] string userId, UpdateRolesDto model, CancellationToken token)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
+
+            var user = await userService.ListAll().FirstOrDefaultAsync(c => c.Id == userId, token);
+
+            if (user is null)
+            {
+                ModelState.AddModelError("UserNotFound", $"User not found");
+                return NotFound(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
+
+            if (model.Roles.Count < 1)
+            {
+                ModelState.AddModelError("BadRequest", "You must add at least one role");
+                return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
+
+            if (model.Roles.Count > 0)
+            {
+                foreach (string role in model.Roles)
+                {
+                    var roleExists = await userService.RoleManager.Roles.FirstOrDefaultAsync(c => c.Name == role) != null;
+                    if (roleExists == false)
+                    {
+                        ModelState.AddModelError("BadRequest", $"Role {role} does not exist");
+                        return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
+                    }
+                }
+            }
+
+            var getUserRoles = await userService.UserManager.GetRolesAsync(user);
+            var removeUserRoles = await userService.UserManager.RemoveFromRolesAsync(user, getUserRoles);
+            if (!removeUserRoles.Succeeded)
+            {
+                ModelState.AddModelError("UnprocessableEntity", $"Error while changing role");
+                return UnprocessableEntity(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
+
+            var addRoles = await userService.UserManager.AddToRolesAsync(user, model.Roles);
+            if (!addRoles.Succeeded)
+            {
+                ModelState.AddModelError("BadRequest", "Unable To Change User Role");
+                return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
+            }
+
+            user.Roles = model.Roles;
+            await userService.UpdateUser(user);
+
+            return Ok(ResponseBuilder.BuildResponse<object>(null, "Roles Updated Successfully"));
+        }
+
 
     }
 }

@@ -37,7 +37,7 @@ namespace MedicalSystem.Controllers
         [HttpPost("create")]
         [ProducesResponseType(typeof(GlobalResponse<GetUserDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
-        [Authorize(Roles = "Admin,Role1,Role2")]
+        [Authorize(Roles = "Admin,Role2")]
         public async Task<IActionResult> Create(CreateUserDto model, CancellationToken token)
         {
             if (!ModelState.IsValid)
@@ -76,13 +76,11 @@ namespace MedicalSystem.Controllers
         [ProducesResponseType(typeof(GlobalResponse<GetUserDto[]>), StatusCodes.Status200OK)]
         public async Task<IActionResult> ListAll(int page, int perPage, CancellationToken token)
         {
-            var users = patientService.GetAll().Include(k => k.User).Select(c => c.User);
+            var users = await patientService.GetAll().Include(k => k.User).Select(c => c.User).ToListAsync(token);
 
-            var paginatedUsers = users.Paginate(page, perPage);
+            var mapped = mapper.Map<List<GetUserDto>>(users);
 
-            var mapped = mapper.Map<List<GetUserDto>>(paginatedUsers);
-
-            return Ok(ResponseBuilder.BuildResponse(null, Pagination.GetPagedData(mapped, page, perPage, await users.CountAsync(token))));
+            return Ok(ResponseBuilder.BuildResponse(null, mapped));
         }
 
         [HttpGet("get-by-id")]
@@ -101,19 +99,16 @@ namespace MedicalSystem.Controllers
 
         [HttpGet("get-all-records")]
         [ProducesResponseType(typeof(GlobalResponse<GetRecordDto[]>), StatusCodes.Status200OK)]
-        [Authorize (Roles = "Role3")]
         public async Task<IActionResult> ListAllRecords(int page, int perPage, CancellationToken token)
         {
             var loggedInUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var users = recordService.GetAll()
-                .Where(c => c.PatientId == loggedInUser);
+            var records = await recordService.GetAll()
+                .Where(c => c.PatientId == loggedInUser).ToListAsync(token);
 
-            var paginatedUsers = users.Paginate(page, perPage);
+            var mapped = mapper.Map<List<GetRecordDto>>(records);
 
-            var mapped = mapper.Map<List<GetRecordDto>>(paginatedUsers);
-
-            return Ok(ResponseBuilder.BuildResponse(null, Pagination.GetPagedData(mapped, page, perPage, await users.CountAsync(token))));
+            return Ok(ResponseBuilder.BuildResponse(null, mapped));
         }
 
         [HttpGet("get-records-by-medicalOfficer")]
@@ -121,7 +116,7 @@ namespace MedicalSystem.Controllers
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status400BadRequest)]
         [Authorize(Roles = "Role3")]
-        public async Task<IActionResult> GetByPstientRecords([Required] string medicalOfficerId, int page, int perPage, CancellationToken token)
+        public async Task<IActionResult> GetByPstientRecords([Required] string medicalOfficerId, CancellationToken token)
         {
             if (string.IsNullOrEmpty(medicalOfficerId))
             {
@@ -131,15 +126,11 @@ namespace MedicalSystem.Controllers
 
             var loggedInUser = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var records = recordService.GetAll().Where(c => c.MedicalOfficerId == medicalOfficerId && c.PatientId == loggedInUser);
+            var records = await recordService.GetAll().Where(c => c.MedicalOfficerId == medicalOfficerId && c.PatientId == loggedInUser).ToListAsync(token);
 
-            var paginatedRecords = records.Paginate(page, perPage);
+            var mapped = mapper.Map<List<GetRecordDto>>(records);
 
-            var mapped = mapper.Map<List<GetRecordDto>>(paginatedRecords);
-
-            var paginatedResults = Pagination.GetPagedData(mapped, page, perPage, await records.CountAsync(token));
-
-            return Ok(ResponseBuilder.BuildResponse(null, paginatedResults));
+            return Ok(ResponseBuilder.BuildResponse(null, mapped));
         }
     }
 }

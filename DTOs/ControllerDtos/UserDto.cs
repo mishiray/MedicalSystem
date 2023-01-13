@@ -14,8 +14,6 @@ namespace MedicalSystem.DTOs.ControllerDtos
         [Required]
         public string Password { get; set; }
         [Required]
-        public UserType UserType { get; set; }
-        [Required]
         public List<string> Roles { get; set; }
     }
 
@@ -28,5 +26,10 @@ namespace MedicalSystem.DTOs.ControllerDtos
         public List<string> Roles { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
+    }
+    public class UpdateRolesDto
+    {
+        [Required]
+        public List<string> Roles { get; set; }
     }
 }

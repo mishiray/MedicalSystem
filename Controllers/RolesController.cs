@@ -28,6 +28,7 @@ namespace MedicalSystem.Controllers.V1
 
 
         [HttpPost("create")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> CreateRole(string rolename)
         {
             if (string.IsNullOrEmpty(rolename))

@@ -37,7 +37,7 @@ namespace MedicalSystem.Controllers
         [HttpPost("create")]
         [ProducesResponseType(typeof(GlobalResponse<Record>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(GlobalResponse<object>), StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "Role2")]
+        [Authorize(Roles = "Role3,Role6")]
         public async Task<IActionResult> Create(CreateRecordDto model, CancellationToken token)
         {
             if (!ModelState.IsValid)
@@ -55,17 +55,15 @@ namespace MedicalSystem.Controllers
 
         [HttpGet("get-all")]
         [ProducesResponseType(typeof(GlobalResponse<GetRecordDto[]>), StatusCodes.Status200OK)]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ListAll(int page, int perPage, CancellationToken token)
+        [Authorize(Roles = "Admin,Role4,Role7")]
+        public async Task<IActionResult> ListAll(CancellationToken token)
         {
             
-            var records = recordService.GetAll();
+            var records = await recordService.GetAll().ToListAsync(token);
 
-            var paginatedRecords = records.Paginate(page, perPage);
+            var mapped = mapper.Map<List<GetRecordDto>>(records);
 
-            var mapped = mapper.Map<List<GetRecordDto>>(paginatedRecords);
-
-            return Ok(ResponseBuilder.BuildResponse(null, Pagination.GetPagedData(mapped, page, perPage, await records.CountAsync(token))));
+            return Ok(ResponseBuilder.BuildResponse(null, mapped));
         }
 
         [HttpGet("get-by-id")]
