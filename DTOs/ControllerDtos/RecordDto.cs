@@ -14,7 +14,6 @@ namespace MedicalSystem.DTOs.ControllerDtos
         public DateTime? NextAppointment { get; set; }
         [Required]
         public string Remark { get; set; }
-        public int Status { get; set; }
     }
 
     public class GetRecordDto

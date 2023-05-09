@@ -43,6 +43,11 @@ namespace MedicalSystem.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ResponseBuilder.BuildResponse<object>(ModelState, null));
 
+            var existingPatient = await patientService.Get(model.PatientId, token);
+            if (existingPatient.Response != ServiceResponses.Success)
+            {
+                return new ControllerResponse().ReturnResponse(existingPatient);
+            }
 
             var record = mapper.Map<Record>(model);
 
@@ -59,7 +64,11 @@ namespace MedicalSystem.Controllers
         public async Task<IActionResult> ListAll(CancellationToken token)
         {
             
-            var records = await recordService.GetAll().ToListAsync(token);
+            var records = await recordService.GetAll()
+                .Include(c => c.MedicalOfficer.User)
+                .Include(c => c.Patient.User)
+                .OrderByDescending(c => c.DateCreated)
+                .ToListAsync(token);
 
             var mapped = mapper.Map<List<GetRecordDto>>(records);
 

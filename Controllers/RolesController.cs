@@ -55,6 +55,7 @@ namespace MedicalSystem.Controllers.V1
 
 
         [HttpGet("list-all")]
+        [AllowAnonymous]
         public async Task<IActionResult> ListAll(CancellationToken token)
         {
             var roles = await RoleManager.Roles.ToListAsync(token);
